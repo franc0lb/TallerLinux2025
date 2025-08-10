@@ -50,7 +50,9 @@
         line: '/var/nfs_shared *(rw,sync)'
         create: yes
         state: present
-      notify: Exportar NFS, Reiniciar NFS 
+      notify: 
+        - Exportar NFS
+        - Reiniciar NFS 
   
   handlers:     
    # 7. Handler para exportar directorio
