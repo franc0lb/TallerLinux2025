@@ -1,0 +1,65 @@
+---
+- name: Instalacion y configuracion de nfs server en Centos
+  hosts: centos
+  become: true
+  tasks:
+
+    # 1. Instalar nfs
+    - name: Asegurarse de que NFS está instalado
+      ansible.builtin.dnf:
+        name: nfs-utils
+        state: present
+
+    # 2. Iniciamos servicio y lo habilitamos
+    - name: Inciar servicio
+      ansible.builtin.systemd:
+        name: nfs-server
+        state: started
+        enabled: yes
+
+   
+   # 3. Habilitar conexion al puerto 2049 tcp
+    - name: Habilitar puerto 2049 tcp
+      ansible.posix.firewalld:
+        port: 2049/tcp
+        permanent: yes
+        state: enabled
+        immediate: yes
+
+   # 4. Habilitar conexion al puerto 2049 udp
+    - name: Habilitar puerto 2049 udp
+      ansible.posix.firewalld:
+        port: 2049/udp
+        permanent: yes
+        state: enabled
+        immediate: yes
+
+   # 5. Crear el directorio que vamos a exportar  
+    - name: Crear directorio 
+      ansible.builtin.file:
+        path: /var/nfs_shared
+        state: directory
+        mode: 0777 
+        owner: nobody 
+        group: nobody
+
+   # 6. Modificamos /etc/exports para setear el directorio que vamos a exportar 
+    - name: Modificar /etc/exports
+      ansible.builtin.lineinfile:
+        path: /etc/exports
+        line: '/var/nfs_shared *(rw,sync)'
+        create: yes
+        state: present
+      notify: Exportar NFS, Reiniciar NFS 
+  
+  handlers:     
+   # 7. Handler para exportar directorio
+    - name: Exportar NFS 
+      ansible.builtin.command: exportfs -r
+ 
+   # 8. Handler para reiniciar el servicio NFS
+    - name: Reiniciar NFS
+      ansible.builtin.service:
+        name: nfs-server
+        state: restarted
+
