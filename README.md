@@ -15,10 +15,10 @@ Primero debemos instalar los complementos necesarios para que los playbooks func
 *ansible-playbook playbooks/nfs_setup.yml -K*
 
 **Este playbook se aplica para el grupo centos y se encarga de:**
-- El servidor NFS esté instalado 
-– Se asegura que el servicio NFS esté iniciado y funcionando 
+- El servidor NFS esté instalado
+- Se asegura que el servicio NFS esté iniciado y funcionando 
 - Se asegura que el firewall permita conexiones al puerto 2049
- - Se asegura que exista el directorio /var/nfs_shared, que pertenece al usuario/grupo nobody/nobody y tiene permisos 777.
+- Se asegura que exista el directorio /var/nfs_shared, que pertenece al usuario/grupo nobody/nobody y tiene permisos 777.
 - Que el directorio está compartido por NFS. 
 - Se crea un handler que reinicia el servicio de nfs y ejecuta el exportfs -r si /etc/exports cambia.
 
