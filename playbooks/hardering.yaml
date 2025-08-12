@@ -72,6 +72,12 @@
           bantime  = 600 # Tiempo de baneo
           findtime = 600 # Periodo de tiempo por el cual cuenta los intentos fallidos
       notify: Reiniciar fail2ban
+   
+    # 10. Eliminamos este archivo para evitar que sobreescriba el sshd_config 
+    - name: Eliminar /etc/ssh/sshd_config.d/50-cloud-init.conf
+      ansible.builtin.file:
+        path: /etc/ssh/sshd_config.d/50-cloud-init.conf
+        state: absent
 
   handlers:
     # Handler para reiniciar el sistema si se actualizan los paquetes
