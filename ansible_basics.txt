@@ -37,6 +37,9 @@ La información contenida en un inventario puede incluir:
 
 4. Explique qué es un módulo de Ansible y dé un ejemplo.
 
+Son pequeños programas o agrupación de código los cuales ejecutan tareas sobre un equipo.
+
+    Ejemplo: instalar un programa en un equipo que usa una distro basada en Red Hat, utilizando el módulo "ansible.builtin.dnf".
 
 
 
